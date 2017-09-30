@@ -4,13 +4,12 @@ services:
   jenkins-master:
     networks:
       - pdc_net
-    image: 'jenkins:latest'
+    image: '{{ docker_jenkins_image.name }}:{{ docker_jenkins_image.tag }}'
     restart: always
     ports:
       - 8080:8080
     volumes:
       - 'jenkins-data:/var/jenkins_home'
-      - './log:/var/log/jenkins'
 
 volumes:
   jenkins-data:

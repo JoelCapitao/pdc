@@ -5,18 +5,18 @@ services:
     hostname: 'gitlab.infra.corp'
     networks:
       - pdc_net
-    image: 'gitlab-ce:latest'
+    image: '{{ docker_gitlab_image.name }}:{{ docker_gitlab_image.tag }}'
     restart: always
     ports:
       - 443:443
       - 80:80
-      - 22:22
+      - 22
     volumes:
       - 'gitlab-data:/var/opt/gitlab'
       - 'gitlab-logs:/var/log/gitlab'
       - 'gitlab-config:/etc/gitlab'
     environment:
-      GITLAB_OMNIBUS_CONFIG: "external_url 'http://192.168.1.27'"
+      GITLAB_OMNIBUS_CONFIG: "external_url 'http://{{ ansible_eth0.ipv4.address }}'"
 volumes:
   gitlab-data:
   gitlab-logs:

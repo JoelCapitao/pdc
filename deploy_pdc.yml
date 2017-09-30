@@ -1,0 +1,52 @@
+---
+- hosts: localhost
+  become: yes
+  tasks:
+#    - name: Download Jenkins docker image
+#      unarchive:
+#        src: http://bin-repo/docker/docker-jenkins.tar
+#        dest: /tmp
+#
+#    - name: Load Jenkins docker image
+#      docker_image:
+#        name: "{{ docker_jenkins_image.name }}"
+#        tag: "{{ docker_jenkins_image.tag }}"
+#        load_path: /tmp/docker-jenkins.tar
+#
+#    - name: Download Gitlab docker image
+#      unarchive:
+#        src: http://bin-repo/docker/docker-gitlab.tar
+#        dest: /tmp
+#
+#    - name: Load Gitlab docker image
+#      docker_image:
+#        name: "{{ docker_gitlab_image.name }}"
+#        tag: "{{ docker_gitlab_image.tag }}"
+#        load_path: /tmp/docker-gitlab.tar
+
+    - name: Create PDC dir
+      file:
+        path: "{{ pdc_dir }}"
+        state: directory
+        mode: 0755
+
+    - name: Upload docker-compose files
+      template:
+        src: "templates/docker-compose.{{ item }}.j2"
+        dest: "{{ pdc_dir }}/docker-compose.{{ item }}.yml"
+      with_items:
+        - gitlab
+        - jenkins
+
+    - name: Create global docker-compose file
+      shell: >-
+        docker-compose
+        -f {{ pdc_dir }}/docker-compose.gitlab.yml
+        -f {{ pdc_dir }}/docker-compose.jenkins.yml
+        config > {{ pdc_dir }}/docker-compose.yml
+
+    - name: Build it
+      shell: docker-compose -f {{ pdc_dir }}/docker-compose.yml build
+
+    - name: Run it
+      shell: docker-compose -f {{ pdc_dir }}/docker-compose.yml up -d

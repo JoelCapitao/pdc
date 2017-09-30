@@ -1,0 +1,10 @@
+---
+pdc_dir: /home/joel/pdc
+
+docker_jenkins_image:
+  name: jenkins
+  tag: latest
+
+docker_gitlab_image:
+  name: gitlab-ce
+  tag: latest
