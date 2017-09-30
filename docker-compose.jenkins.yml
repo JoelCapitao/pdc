@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  jenkins-master:
+    build:
+      context: ./jenkins-master
+    networks:
+      - pdc_net
+    image: 'jenkins:latest'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
+volumes:
+
+networks:
+  pdc_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
