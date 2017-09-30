@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  giltab:
+    build:
+      context: ./gitlab
+    networks:
+      - pdc_net
+    image: 'gitlab:latest'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
+networks:
+  pdc_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
