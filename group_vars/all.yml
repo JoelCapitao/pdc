@@ -1,10 +1,13 @@
 ---
 pdc_dir: /home/joel/pdc
+upload_dir: /home/joel/ownCloud/Development/pdc
 
 docker_jenkins_image:
   name: jenkins
   tag: latest
+  tar: docker-jenkins.tar
 
 docker_gitlab_image:
   name: gitlab-ce
   tag: latest
+  tar: docker-gitlab.tar

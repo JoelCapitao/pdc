@@ -1,28 +1,20 @@
 ---
 - hosts: localhost
-  become: yes
+  become: no
   tasks:
 #    - name: Download Jenkins docker image
 #      unarchive:
 #        src: http://bin-repo/docker/docker-jenkins.tar
-#        dest: /tmp
-#
-#    - name: Load Jenkins docker image
-#      docker_image:
-#        name: "{{ docker_jenkins_image.name }}"
-#        tag: "{{ docker_jenkins_image.tag }}"
-#        load_path: /tmp/docker-jenkins.tar
-#
-#    - name: Download Gitlab docker image
-#      unarchive:
-#        src: http://bin-repo/docker/docker-gitlab.tar
-#        dest: /tmp
-#
-#    - name: Load Gitlab docker image
-#      docker_image:
-#        name: "{{ docker_gitlab_image.name }}"
-#        tag: "{{ docker_gitlab_image.tag }}"
-#        load_path: /tmp/docker-gitlab.tar
+#        dest: "{{ upload_dir }}"
+#      with_items:
+#        - "{{ docker_gitlab_image.tar }}"
+#        - "{{ docker_jenkins_image.tar }}"
+
+    - name: Load docker images
+      shell: "docker load < {{ upload_dir }}/{{ item }}"
+      with_items:
+        - "{{ docker_gitlab_image.tar }}"
+        - "{{ docker_jenkins_image.tar }}"
 
     - name: Create PDC dir
       file:
