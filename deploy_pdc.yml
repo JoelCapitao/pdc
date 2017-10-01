@@ -45,8 +45,11 @@
     - name: Build it
       shell: docker-compose -f {{ pdc_dir }}/docker-compose.yml build
 
-    - name: Run it
-      shell: docker-compose -f {{ pdc_dir }}/docker-compose.yml up -d
+#    - name: Build and run
+#      docker_service:
+#        project_src: "{{ pdc_dir }}"
+#        build: yes
+#        state: present
 
     - name: Load image from archive and push it to registry
       docker_image:
