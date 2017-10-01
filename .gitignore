@@ -1,2 +1,4 @@
 .idea/
 *.tar
+docker-compose-Linux-x86_64
+*.retry

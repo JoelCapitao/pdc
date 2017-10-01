@@ -16,6 +16,12 @@
         - "{{ docker_gitlab_image.tar }}"
         - "{{ docker_jenkins_image.tar }}"
 
+    - name: Install docker-compose
+      get_url:
+        url: "http://bin-repo/docker/{{ docker_compose_bin }}"
+        dest: /usr/local/bin/
+        mode: 744
+
     - name: Create PDC dir
       file:
         path: "{{ pdc_dir }}"
