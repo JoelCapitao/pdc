@@ -15,5 +15,5 @@ docker_images:
     tar: docker-gitlab.tar
   registry:
     name: registry
-    tar: 2.5
+    tag: 2.5
     tar: docker-registry.tar

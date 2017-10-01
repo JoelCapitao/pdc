@@ -4,17 +4,17 @@
   tasks:
 #    - name: Download Jenkins docker image
 #      unarchive:
-#        src: http://bin-repo/docker/docker-jenkins.tar
+#        src: "http://bin-repo/docker/{{ item.value.tar }}"
 #        dest: "{{ upload_dir }}"
-#      with_items:
-#        - "{{ docker_gitlab_image.tar }}"
-#        - "{{ docker_jenkins_image.tar }}"
+#      with_dict: "{{ docker_images }}"
 
-#    - name: Load docker images
-#      shell: "docker load < {{ upload_dir }}/{{ item }}"
-#      with_items:
-#        - "{{ docker_gitlab_image.tar }}"
-#        - "{{ docker_jenkins_image.tar }}"
+    - name: Load docker images
+      docker_image:
+        name: "{{ item.value.name }}"
+        tag: "{{ item.value.tag }}"
+        load_path: "{{ upload_dir }}/{{ item.value.tar }}"
+        state: present
+      with_dict: "{{ docker_images }}"
 
 #    - name: Install docker-compose
 #      get_url:
@@ -47,3 +47,13 @@
 
     - name: Run it
       shell: docker-compose -f {{ pdc_dir }}/docker-compose.yml up -d
+
+    - name: Load image from archive and push it to registry
+      docker_image:
+        repository: "localhost:5000/{{ item.value.name }}"
+        push: yes
+        name: "{{ item.value.name }}"
+        tag: "{{ item.value.tag }}"
+        load_path: "{{ upload_dir }}/{{ item.value.tar }}"
+        state: present
+      with_dict: "{{ docker_images }}"
