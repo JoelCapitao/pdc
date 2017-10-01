@@ -1,18 +1,16 @@
 version: '3'
 
 services:
-  jenkins-master:
+  registry:
     networks:
       - pdc_net
-    image: '{{ docker_images.jenkins.name }}:{{ docker_images.jenkins.tag }}'
+    image: 'registry:2.5'
     restart: always
     ports:
-      - 8080:8080
+      - 5000:5000
     volumes:
-      - 'jenkins-data:/var/jenkins_home'
+      - '/mnt/registry:/var/lib/registry'
 
-volumes:
-  jenkins-data:
 
 networks:
   pdc_net:

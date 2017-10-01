@@ -10,17 +10,17 @@
 #        - "{{ docker_gitlab_image.tar }}"
 #        - "{{ docker_jenkins_image.tar }}"
 
-    - name: Load docker images
-      shell: "docker load < {{ upload_dir }}/{{ item }}"
-      with_items:
-        - "{{ docker_gitlab_image.tar }}"
-        - "{{ docker_jenkins_image.tar }}"
+#    - name: Load docker images
+#      shell: "docker load < {{ upload_dir }}/{{ item }}"
+#      with_items:
+#        - "{{ docker_gitlab_image.tar }}"
+#        - "{{ docker_jenkins_image.tar }}"
 
-    - name: Install docker-compose
-      get_url:
-        url: "http://bin-repo/docker/{{ docker_compose_bin }}"
-        dest: /usr/local/bin/
-        mode: 744
+#    - name: Install docker-compose
+#      get_url:
+#        url: "http://bin-repo/docker/{{ docker_compose_bin }}"
+#        dest: /usr/local/bin/
+#        mode: 744
 
     - name: Create PDC dir
       file:
@@ -30,17 +30,16 @@
 
     - name: Upload docker-compose files
       template:
-        src: "templates/docker-compose.{{ item }}.j2"
-        dest: "{{ pdc_dir }}/docker-compose.{{ item }}.yml"
-      with_items:
-        - gitlab
-        - jenkins
+        src: "templates/docker-compose.{{ item.key }}.j2"
+        dest: "{{ pdc_dir }}/docker-compose.{{ item.key }}.yml"
+      with_dict: "{{ docker_images }}"
 
     - name: Create global docker-compose file
       shell: >-
         docker-compose
         -f {{ pdc_dir }}/docker-compose.gitlab.yml
         -f {{ pdc_dir }}/docker-compose.jenkins.yml
+        -f {{ pdc_dir }}/docker-compose.registry.yml
         config > {{ pdc_dir }}/docker-compose.yml
 
     - name: Build it

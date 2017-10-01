@@ -1,15 +1,19 @@
 ---
 pdc_dir: /home/joel/pdc
-upload_dir: /home/joel/ownCloud/Development/pdc
+upload_dir: /home/joel/ownCloud/Development/pdc/bin
 
 docker_compose_bin: docker-compose-Linux-x86_64
 
-docker_jenkins_image:
-  name: jenkins
-  tag: latest
-  tar: docker-jenkins.tar
-
-docker_gitlab_image:
-  name: gitlab-ce
-  tag: latest
-  tar: docker-gitlab.tar
+docker_images:
+  jenkins:
+    name: jenkins
+    tag: latest
+    tar: docker-jenkins.tar
+  gitlab:
+    name: gitlab-ce
+    tag: latest
+    tar: docker-gitlab.tar
+  registry:
+    name: registry
+    tar: 2.5
+    tar: docker-registry.tar

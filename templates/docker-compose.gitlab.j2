@@ -5,7 +5,7 @@ services:
     hostname: 'gitlab.infra.corp'
     networks:
       - pdc_net
-    image: '{{ docker_gitlab_image.name }}:{{ docker_gitlab_image.tag }}'
+    image: '{{ docker_images.gitlab.name }}:{{ docker_images.gitlab.tag }}'
     restart: always
     ports:
       - 443:443
